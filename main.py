@@ -62,23 +62,6 @@ async def show_random_emojis(message):
     emoji_message = await message.reply_text(' '.join(random.choices(emojis, k=1)))
     return emoji_message
 
-# Inline keyboard for start command
-BUTTONSCONTACT = InlineKeyboardMarkup([[InlineKeyboardButton(text="📞 Contact", url="https://t.me/newstu")]])
-keyboard = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(text="📞 Contact", url="https://t.me/newstudent1885"),
-            InlineKeyboardButton(text="🛠️ Help", url="https://t.me/newstudnt1885"),
-        ],
-    ]
-)
-
-# Image URLs for the random image feature
-image_urls = [
-    "https://tinypic.host/images/2025/02/07/IMG_20250207_224444_975.jpg",
-    "https://tinypic.host/images/2025/02/07/DeWatermark.ai_1738952933236-1.png",
-    # Add more image URLs as needed
-]
 
 @bot.on_message(filters.command("cookies") & filters.private)
 async def cookies_handler(client: Client, m: Message):
@@ -242,72 +225,6 @@ async def restart_handler(_, m):
     await m.reply_text("**🚦STOPPED🚦**", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
         
-@bot.on_message(filters.command(["start"]))
-async def start_command(bot: Client, message: Message):
-    random_image_url = random.choice(image_urls)
-    caption = (
-        "𝐇𝐞𝐥𝐥𝐨 𝐃𝐞𝐚𝐫 👋!\n\n➠ 𝐈 𝐚𝐦 𝐚 𝐓𝐞𝐱𝐭 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 𝐁𝐨𝐭\n\n➠ Can Extract Videos & PDFs From Your Text File and Upload to Telegram!\n\n➠ For Guide Use Command /help 📖\n\n➠ 𝐌𝐚𝐝𝐞 𝐁𝐲 : 𝙎𝘼𝙄𝙉𝙄 𝘽𝙊𝙏𝙎 🦁"
-    )
-    await bot.send_photo(
-        chat_id=message.chat.id,
-        photo=random_image_url,
-        caption=caption,
-        reply_markup=keyboard
-    )
-
-@bot.on_message(filters.command(["id"]))
-async def id_command(client, message: Message):
-    chat_id = message.chat.id
-    await message.reply_text(f"<blockquote>The ID of this chat id is:</blockquote>\n`{chat_id}`")
-
-@bot.on_message(filters.private & filters.command(["info"]))
-async def info(bot: Client, update: Message):
-    
-    text = (
-        f"╭────────────────╮\n"
-        f"│✨ **__Your Telegram Info__**✨ \n"
-        f"├────────────────\n"
-        f"├🔹**Name :** `{update.from_user.first_name} {update.from_user.last_name if update.from_user.last_name else 'None'}`\n"
-        f"├🔹**User ID :** @{update.from_user.username}\n"
-        f"├🔹**TG ID :** `{update.from_user.id}`\n"
-        f"├🔹**Profile :** {update.from_user.mention}\n"
-        f"╰────────────────╯"
-    )
-    
-    await update.reply_text(        
-        text=text,
-        disable_web_page_preview=True,
-        reply_markup=BUTTONSCONTACT
-    )
-
-@bot.on_message(filters.command(["help"]))
-async def txt_handler(client: Client, m: Message):
-    await bot.send_message(m.chat.id, text= (
-        f"╭━━━━━━━✦✧✦━━━━━━━╮\n"
-        f"💥 𝙎𝘼𝙄𝙉𝙄 𝘽𝙊𝙏𝙎 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦\n"
-        f"╰━━━━━━━✦✧✦━━━━━━━╯\n"
-        f"▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n" 
-        f"📌 𝗠𝗮𝗶𝗻 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀:\n\n"  
-        f"➥ /start – Bot Status Check\n"
-        f"➥ /drm – Extract from .txt (Auto)\n"
-        f"➥ /y2t – YouTube → .txt Converter\n"  
-        f"➥ /t2t – Text → .txt Generator\n" 
-        f"➥ /stop – Cancel Running Task\n"
-        f"▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ \n" 
-        f"⚙️ 𝗧𝗼𝗼𝗹𝘀 & 𝗦𝗲𝘁𝘁𝗶𝗻𝗴𝘀: \n\n" 
-        f"➥ /cookies – Update YT Cookies\n" 
-        f"➥ /id – Get Chat/User ID\n"  
-        f"➥ /info – User Details\n"  
-        f"➥ /logs – View Bot Activity\n"
-        f"▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n"  
-        f"💡 𝗡𝗼𝘁𝗲:\n\n"  
-        f"• Send any link for auto-extraction\n"  
-        f"• Supports batch processing\n\n"  
-        f"╭────────⊰◆⊱────────╮\n"   
-        f" ➠ 𝐌𝐚𝐝𝐞 𝐁𝐲 : [𝙎𝘼𝙄𝙉𝙄 𝘽𝙊𝙏𝙎](https://t.me/saini_contact_bot) 💻\n"
-        f"╰────────⊰◆⊱────────╯\n"
-        )
-    )                    
           
 @bot.on_message(filters.command(["logs"]))
 async def send_logs(client: Client, m: Message):  # Correct parameter name
@@ -319,7 +236,7 @@ async def send_logs(client: Client, m: Message):  # Correct parameter name
     except Exception as e:
         await m.reply_text(f"Error sending logs: {e}")
 
-@bot.on_message(filters.command(["drm"]) )
+@bot.on_message(filters.command(["tushar"]) )
 async def txt_handler(bot: Client, m: Message):
     editable = await m.reply_text(f"**🔹Hi I am Poweful TXT Downloader📥 Bot.\n🔹Send me the txt file and wait.**")
     input: Message = await bot.listen(editable.chat.id)
