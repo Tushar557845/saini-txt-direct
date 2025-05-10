@@ -324,22 +324,38 @@ async def txt_handler(bot: Client, m: Message):
     raw_text4 = input4.text
     await input4.delete(True)
 
-    await editable.edit(f"**🔹Send the Video Thumb URL\n🔹Send /d for use default\n\n🔹You can direct upload thumb\n🔹Send **No** for use default**")
+    await editable.edit("𝗡𝗼𝘄 𝗦𝗲𝗻𝗱 𝗧𝗵𝗲 𝗧𝗵𝘂𝗺𝗯 𝗜𝗺𝗮𝗴𝗲\n\n𝗢𝗿 𝗜𝗳 𝗗𝗼𝗻'𝘁 𝗪𝗮𝗻𝘁 𝗧𝗵𝗨𝗺𝗯𝗻𝗮𝗶𝗹 𝗦𝗲𝗻𝗱 = 𝗻𝗼")
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
     await input6.delete(True)
-
-    if input6.photo:
-        thumb = await input6.download()  # Use the photo sent by the user
-    elif raw_text6.startswith("http://") or raw_text6.startswith("https://"):
-        # If a URL is provided, download thumbnail from the URL
-        getstatusoutput(f"wget '{raw_text6}' -O 'thumb.jpg'")
-        thumb = "thumb.jpg"
-    else:
-        thumb = raw_text6
     await editable.delete()
-    await m.reply_text(f"__**🎯Target Batch : {b_name}**__")
 
+# Check if the user sent a photo or "No"
+    if input6.photo:
+    # User has selected a thumbnail
+        thumb = await input6.download()  # Use the photo sent by the user
+        await bot.send_message(editable.chat.id, "Thumbnail received. Proceeding with upload process.")
+    
+    # Continue with the upload process using the thumbnail
+    # Add your upload logic here
+    # For example:
+    # upload_file_with_thumbnail(file, thumb)
+    
+    else:
+    # If user sends "No", skip thumbnail processing and proceed with upload without thumbnail
+        if raw_text6.lower() == "no":
+            thumb = "no"
+            await bot.send_message(editable.chat.id, "No thumbnail selected. Proceeding without thumbnail.")
+        
+        # Continue with the upload process without thumbnail
+        # Add your upload logic here
+        # For example:
+        # upload_file_without_thumbnail(file)
+    
+        else:
+        # Handle case if the user sends invalid input
+            await bot.send_message(editable.chat.id, "Invalid input. Please send a valid thumbnail or type 'no'.")
+        
     failed_count = 0
     count =int(raw_text)    
     arg = int(raw_text)
